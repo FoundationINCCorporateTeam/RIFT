@@ -1,7 +1,7 @@
 # RIFT Language Syntax Definition
 
-**Version:** 1.0  
-**Last Updated:** 2026-01-28
+**Version:** 2.0  
+**Last Updated:** 2026-02-05
 
 ## Table of Contents
 
@@ -1328,11 +1328,1561 @@ wait, when, while, yield, yes
 | `crypto` | Cryptography and hashing |
 | `fs` | File system operations |
 | `json` | JSON parsing and serialization |
-| `math` | Mathematical functions |
-| `string` | String manipulation |
-| `array` | Array utilities |
-| `date` | Date and time handling |
+| `math` | Comprehensive mathematical functions |
+| `string` | Advanced string manipulation |
+| `array` | Array utilities and transformations |
+| `datetime` | Date and time handling |
 | `regex` | Regular expressions |
+| `validation` | Input validation and sanitization |
+| `collections` | Advanced data structures |
+| `events` | Event emitter and pub/sub |
+| `logging` | Structured logging utilities |
+| `async` | Promise-like async utilities |
+| `functional` | Functional programming utilities |
+
+---
+
+## Appendix D: Math Module
+
+The math module provides comprehensive mathematical functions:
+
+### Constants
+
+```rift
+grab math
+
+print(math.PI)       # 3.14159265359
+print(math.E)        # 2.71828182846
+print(math.TAU)      # 6.28318530718
+print(math.PHI)      # 1.61803398875 (Golden ratio)
+print(math.SQRT2)    # 1.41421356237
+print(math.INF)      # Infinity
+```
+
+### Basic Operations
+
+```rift
+math.abs(-5)         # 5
+math.sign(-10)       # -1
+math.floor(3.7)      # 3
+math.ceil(3.2)       # 4
+math.round(3.5)      # 4
+math.trunc(3.9)      # 3
+math.frac(3.7)       # 0.7
+```
+
+### Power and Root Functions
+
+```rift
+math.pow(2, 8)       # 256
+math.sqrt(16)        # 4
+math.cbrt(27)        # 3
+math.nthroot(81, 4)  # 3
+math.hypot(3, 4)     # 5
+```
+
+### Exponential and Logarithmic
+
+```rift
+math.exp(1)          # 2.71828...
+math.log(10)         # 2.302... (natural log)
+math.log2(8)         # 3
+math.log10(100)      # 2
+```
+
+### Trigonometry
+
+```rift
+math.sin(0)          # 0
+math.cos(0)          # 1
+math.tan(math.PI/4)  # 1
+math.asin(0.5)       # 0.5235...
+math.degrees(math.PI) # 180
+math.radians(180)    # 3.14159...
+```
+
+### Number Theory
+
+```rift
+math.gcd(12, 18)     # 6
+math.lcm(4, 6)       # 12
+math.factorial(5)    # 120
+math.comb(10, 3)     # 120
+math.perm(5, 3)      # 60
+math.isPrime(17)     # yes
+math.primes(20)      # ~2, 3, 5, 7, 11, 13, 17, 19!
+math.factors(12)     # ~2, 2, 3!
+math.divisors(12)    # ~1, 2, 3, 4, 6, 12!
+math.fibonacci(10)   # 55
+math.fibSequence(8)  # ~0, 1, 1, 2, 3, 5, 8, 13!
+```
+
+### Statistics
+
+```rift
+let data = ~1, 2, 3, 4, 5, 6, 7, 8, 9, 10!
+
+math.sum(data)       # 55
+math.product(data)   # 3628800
+math.mean(data)      # 5.5
+math.median(data)    # 5.5
+math.mode(~1, 2, 2, 3!) # 2
+math.variance(data)  # 9.166...
+math.stdev(data)     # 3.027...
+math.min(data)       # 1
+math.max(data)       # 10
+math.range(data)     # 9
+math.percentile(data, 75) # 7.75
+```
+
+### Random Numbers
+
+```rift
+math.random()        # Random 0-1
+math.randomInt(1, 100) # Random integer 1-100
+math.randomFloat(0, 1) # Random float 0-1
+math.randomChoice(~"a", "b", "c"!) # Random item
+math.randomSample(~1, 2, 3, 4, 5!, 3) # 3 random items
+math.shuffle(~1, 2, 3, 4, 5!) # Shuffled array
+math.seed(42)        # Set random seed
+```
+
+### Interpolation and Clamping
+
+```rift
+math.clamp(5, 0, 10) # 5 (within range)
+math.clamp(15, 0, 10) # 10 (clamped)
+math.lerp(0, 100, 0.5) # 50
+math.inverseLerp(0, 100, 50) # 0.5
+math.remap(5, 0, 10, 0, 100) # 50
+math.smoothStep(0, 1, 0.5) # 0.5 (smooth transition)
+```
+
+### Vector Operations
+
+```rift
+math.dot2d(~1, 2!, ~3, 4!) # 11
+math.dot3d(~1, 2, 3!, ~4, 5, 6!) # 32
+math.cross3d(~1, 0, 0!, ~0, 1, 0!) # ~0, 0, 1!
+math.magnitude2d(~3, 4!) # 5
+math.normalize2d(~3, 4!) # ~0.6, 0.8!
+math.distance2d(~0, 0!, ~3, 4!) # 5
+math.angle2d(~1, 0!, ~0, 1!) # 1.5707... (π/2)
+```
+
+---
+
+## Appendix E: String Module
+
+The string module provides comprehensive string manipulation:
+
+### Case Conversion
+
+```rift
+grab string
+
+string.upper("hello")     # "HELLO"
+string.lower("HELLO")     # "hello"
+string.capitalize("hello") # "Hello"
+string.title("hello world") # "Hello World"
+string.swapcase("Hello")  # "hELLO"
+string.camelCase("hello_world") # "helloWorld"
+string.pascalCase("hello_world") # "HelloWorld"
+string.snakeCase("helloWorld") # "hello_world"
+string.kebabCase("helloWorld") # "hello-world"
+string.constantCase("hello") # "HELLO"
+```
+
+### Trimming and Padding
+
+```rift
+string.trim("  hello  ") # "hello"
+string.trimStart("  hello") # "hello"
+string.trimEnd("hello  ") # "hello"
+string.padStart("5", 3, "0") # "005"
+string.padEnd("5", 3, "0") # "500"
+string.padCenter("hi", 6) # "  hi  "
+string.truncate("hello world", 8) # "hello..."
+```
+
+### Search and Replace
+
+```rift
+string.contains("hello", "ell") # yes
+string.startsWith("hello", "hel") # yes
+string.endsWith("hello", "lo") # yes
+string.indexOf("hello", "l") # 2
+string.lastIndexOf("hello", "l") # 3
+string.count("hello", "l") # 2
+string.replace("hello", "l", "L", 1) # "heLlo"
+string.replaceAll("hello", @"l": "L", "o": "0"#) # "heLL0"
+string.remove("hello", "l") # "heo"
+```
+
+### Splitting and Joining
+
+```rift
+string.split("a,b,c", ",") # ~"a", "b", "c"!
+string.splitLines("a\nb\nc") # ~"a", "b", "c"!
+string.splitWords("hello world") # ~"hello", "world"!
+string.join(~"a", "b", "c"!, "-") # "a-b-c"
+string.chunk("abcdef", 2) # ~"ab", "cd", "ef"!
+```
+
+### Character Access
+
+```rift
+string.charAt("hello", 1) # "e"
+string.charCodeAt("hello", 0) # 104
+string.fromCharCode(65, 66, 67) # "ABC"
+string.chars("hello") # ~"h", "e", "l", "l", "o"!
+string.codes("hello") # ~104, 101, 108, 108, 111!
+```
+
+### Substring Operations
+
+```rift
+string.substring("hello", 1, 4) # "ell"
+string.slice("hello", -2) # "lo"
+string.left("hello", 2) # "he"
+string.right("hello", 2) # "lo"
+string.mid("hello", 1, 3) # "ell"
+```
+
+### Formatting
+
+```rift
+string.format("Hello, {0}!", "World") # "Hello, World!"
+string.repeat("ab", 3) # "ababab"
+string.reverse("hello") # "olleh"
+string.wrap("long text here", 5) # Word-wrapped text
+string.dedent("  hello\n  world") # "hello\nworld"
+string.indent("hello\nworld", "  ") # "  hello\n  world"
+```
+
+### Validation
+
+```rift
+string.isEmpty("") # yes
+string.isBlank("   ") # yes
+string.isAlpha("hello") # yes
+string.isNumeric("12345") # yes
+string.isAlphanumeric("abc123") # yes
+string.isUpper("HELLO") # yes
+string.isLower("hello") # yes
+string.isAscii("hello") # yes
+string.isIdentifier("myVar") # yes
+string.matches("hello", "^h.*o$") # yes
+```
+
+### Comparison
+
+```rift
+string.equals("hello", "hello") # yes
+string.equalsIgnoreCase("Hello", "hello") # yes
+string.compare("a", "b") # -1
+string.naturalCompare("file2", "file10") # -1
+string.levenshtein("kitten", "sitting") # 3
+string.similarity("hello", "hallo") # 0.8
+```
+
+### Extraction
+
+```rift
+string.extractNumbers("a1b2c3") # ~1, 2, 3!
+string.extractWords("Hello, World!") # ~"Hello", "World"!
+string.extractEmails("test@example.com") # ~"test@example.com"!
+string.extractUrls("Visit https://example.com") # ~"https://example.com"!
+string.extractHashtags("#hello #world") # ~"#hello", "#world"!
+string.extractMentions("Hi @user!") # ~"@user"!
+```
+
+### Generation and Utilities
+
+```rift
+string.random(10) # Random alphanumeric string
+string.random(10, "hex") # Random hex string
+string.uuid() # UUID v4
+string.slugify("Hello World!") # "hello-world"
+string.humanize("hello_world") # "Hello world"
+string.pluralize("user") # "users"
+string.singularize("users") # "user"
+```
+
+### Encoding
+
+```rift
+string.escapeHtml("<script>") # "&lt;script&gt;"
+string.unescapeHtml("&lt;script&gt;") # "<script>"
+string.escapeRegex("a.b") # "a\\.b"
+string.stripAccents("café") # "cafe"
+string.encode("hello", "utf-8") # Bytes
+string.decode(bytes, "utf-8") # String
+```
+
+---
+
+## Appendix F: Array Module
+
+The array module provides comprehensive array manipulation:
+
+### Creation
+
+```rift
+grab array
+
+array.create(5, 0) # ~0, 0, 0, 0, 0!
+array.range(5) # ~0, 1, 2, 3, 4!
+array.range(1, 6) # ~1, 2, 3, 4, 5!
+array.range(0, 10, 2) # ~0, 2, 4, 6, 8!
+array.of(1, 2, 3) # ~1, 2, 3!
+array.repeat("x", 3) # ~"x", "x", "x"!
+```
+
+### Access
+
+```rift
+let arr = ~1, 2, 3, 4, 5!
+
+array.first(arr) # 1
+array.last(arr) # 5
+array.get(arr, 2) # 3
+array.get(arr, 10, 0) # 0 (default)
+array.nth(arr, 3) # 3 (1-indexed)
+array.head(arr, 3) # ~1, 2, 3!
+array.tail(arr, 2) # ~4, 5!
+array.rest(arr) # ~2, 3, 4, 5!
+array.initial(arr) # ~1, 2, 3, 4!
+```
+
+### Modification (returns new array)
+
+```rift
+array.push(arr, 6) # ~1, 2, 3, 4, 5, 6!
+array.unshift(arr, 0) # ~0, 1, 2, 3, 4, 5!
+array.insert(arr, 2, 99) # ~1, 2, 99, 3, 4, 5!
+array.removeAt(arr, 1) # ~1, 3, 4, 5!
+array.removeItem(arr, 3) # ~1, 2, 4, 5!
+array.removeAll(arr, 3) # Remove all occurrences
+array.replace(arr, 1, 99) # ~1, 99, 3, 4, 5!
+array.swap(arr, 0, 4) # ~5, 2, 3, 4, 1!
+array.move(arr, 0, 4) # Move item at 0 to index 4
+array.rotate(arr, 2) # ~4, 5, 1, 2, 3!
+array.shuffle(arr) # Shuffled array
+```
+
+### Slicing
+
+```rift
+array.slice(arr, 1, 4) # ~2, 3, 4!
+array.chunk(~1, 2, 3, 4, 5, 6!, 2) # ~~1, 2!, ~3, 4!, ~5, 6!!
+array.splitAt(arr, 2) # ~~1, 2!, ~3, 4, 5!!
+```
+
+### Searching
+
+```rift
+array.indexOf(arr, 3) # 2
+array.lastIndexOf(~1, 2, 3, 2, 1!, 2) # 3
+array.includes(arr, 3) # yes
+array.includesAll(arr, ~1, 2!) # yes
+array.includesAny(arr, ~1, 99!) # yes
+array.binarySearch(~1, 2, 3, 4, 5!, 3) # 2
+```
+
+### Testing
+
+```rift
+array.isEmpty(~!) # yes
+array.isSorted(~1, 2, 3!) # yes
+array.isUnique(~1, 2, 3!) # yes
+```
+
+### Transformation
+
+```rift
+let nums = ~1, 2, 3, 4, 5!
+
+array.reverse(nums) # ~5, 4, 3, 2, 1!
+array.sort(nums) # ~1, 2, 3, 4, 5!
+array.sort(nums, none, yes) # ~5, 4, 3, 2, 1! (descending)
+array.flat(~~1, 2!, ~3, 4!!) # ~1, 2, 3, 4!
+array.flat(~~1, ~2, ~3!!!!, 2) # Flatten with depth
+array.compact(~0, 1, none, 2, "", 3!) # ~1, 2, 3!
+array.withoutNone(~1, none, 2, none, 3!) # ~1, 2, 3!
+```
+
+### Aggregation
+
+```rift
+array.sum(nums) # 15
+array.product(nums) # 120
+array.min(nums) # 1
+array.max(nums) # 5
+array.mean(nums) # 3
+array.count(nums) # 5
+```
+
+### Set Operations
+
+```rift
+let a = ~1, 2, 3!
+let b = ~2, 3, 4!
+
+array.unique(~1, 2, 2, 3, 3, 3!) # ~1, 2, 3!
+array.union(a, b) # ~1, 2, 3, 4!
+array.intersection(a, b) # ~2, 3!
+array.difference(a, b) # ~1!
+array.symmetricDifference(a, b) # ~1, 4!
+```
+
+### Combination
+
+```rift
+array.concat(~1, 2!, ~3, 4!) # ~1, 2, 3, 4!
+array.zip(~1, 2!, ~"a", "b"!) # ~~1, "a"!, ~2, "b"!!
+array.zipLongest(~1, 2, 3!, ~"a", "b"!, fill_value: "") # With fill
+array.unzip(~~1, "a"!, ~2, "b"!!) # ~~1, 2!, ~"a", "b"!!
+array.cartesian(~1, 2!, ~"a", "b"!) # All combinations
+array.interleave(~1, 3!, ~2, 4!) # ~1, 2, 3, 4!
+```
+
+### Iteration Utilities
+
+```rift
+array.enumerate(~"a", "b", "c"!) # ~~0, "a"!, ~1, "b"!, ~2, "c"!!
+array.window(~1, 2, 3, 4!, 2) # ~~1, 2!, ~2, 3!, ~3, 4!!
+array.pairs(~1, 2, 3!) # ~~1, 2!, ~2, 3!!
+array.triplets(~1, 2, 3, 4!) # ~~1, 2, 3!, ~2, 3, 4!!
+```
+
+### Sampling
+
+```rift
+array.sample(arr) # Random item
+array.sampleSize(arr, 3) # 3 random items
+```
+
+### Conversion
+
+```rift
+array.toDict(~~"a", 1!, ~"b", 2!!) # @a: 1, b: 2#
+array.toSet(~1, 2, 2, 3!) # Set with unique items
+array.toString(~1, 2, 3!, "-") # "1-2-3"
+```
+
+---
+
+## Appendix G: DateTime Module
+
+The datetime module provides comprehensive date/time handling:
+
+### Getting Current Date/Time
+
+```rift
+grab datetime
+
+let now = datetime.now() # Current datetime
+let utc = datetime.utcNow() # Current UTC datetime
+let today = datetime.today() # Today's date
+let ts = datetime.timestamp() # Unix timestamp
+let tsMs = datetime.timestampMs() # Timestamp in milliseconds
+```
+
+### Creating Dates
+
+```rift
+datetime.create(2024, 6, 15) # June 15, 2024
+datetime.create(2024, 6, 15, 14, 30, 0) # With time
+datetime.fromTimestamp(1718457600) # From Unix timestamp
+datetime.fromIso("2024-06-15T14:30:00Z") # From ISO string
+datetime.parse("2024/06/15", "%Y/%m/%d") # Custom format
+```
+
+### Formatting
+
+```rift
+let dt = datetime.create(2024, 6, 15, 14, 30, 0)
+
+datetime.format(dt, "%Y-%m-%d") # "2024-06-15"
+datetime.format(dt, "%B %d, %Y") # "June 15, 2024"
+datetime.toIso(dt) # "2024-06-15T14:30:00"
+datetime.toString(dt) # "2024-06-15 14:30:00"
+datetime.formatRelative(dt) # "2 hours ago" or "in 3 days"
+```
+
+### Manipulation
+
+```rift
+# Adding time
+datetime.add(dt, days: 5) # Add 5 days
+datetime.add(dt, months: 1) # Add 1 month
+datetime.add(dt, years: 1, days: 30) # Add 1 year and 30 days
+
+# Subtracting time
+datetime.subtract(dt, hours: 2) # Subtract 2 hours
+
+# Setting values
+datetime.set(dt, month: 1, day: 1) # Set to Jan 1
+
+# Start/end of periods
+datetime.startOf(dt, "month") # First day of month at midnight
+datetime.startOf(dt, "year") # Jan 1 at midnight
+datetime.startOf(dt, "week") # Monday at midnight
+datetime.endOf(dt, "month") # Last day of month at 23:59:59
+datetime.endOf(dt, "day") # End of day at 23:59:59
+```
+
+### Comparison
+
+```rift
+let dt1 = datetime.create(2024, 6, 15)
+let dt2 = datetime.create(2024, 6, 20)
+
+datetime.isBefore(dt1, dt2) # yes
+datetime.isAfter(dt2, dt1) # yes
+datetime.isSame(dt1, dt1) # yes
+datetime.isSame(dt1, dt2, "month") # yes (same month)
+datetime.isBetween(dt1, start, end) # Is dt1 between start and end?
+
+# Calculate difference
+datetime.diff(dt1, dt2, "days") # 5
+datetime.diff(dt1, dt2, "hours") # 120
+datetime.diff(dt1, dt2, "seconds") # 432000
+```
+
+### Properties
+
+```rift
+datetime.isLeapYear(2024) # yes
+datetime.daysInMonth(2024, 2) # 29 (leap year)
+datetime.daysInYear(2024) # 366
+
+datetime.weekOfYear(dt) # Week number (1-53)
+datetime.dayOfYear(dt) # Day number (1-366)
+datetime.dayOfWeek(dt) # 0-6 (Mon-Sun)
+datetime.dayName(dt) # "Saturday"
+datetime.monthName(dt) # "June"
+datetime.quarter(dt) # 2
+
+datetime.isWeekend(dt) # yes/no
+datetime.isWeekday(dt) # yes/no
+datetime.isToday(dt) # yes/no
+datetime.isFuture(dt) # yes/no
+datetime.isPast(dt) # yes/no
+```
+
+### Duration
+
+```rift
+# Create duration
+let dur = datetime.duration(days: 2, hours: 5, minutes: 30)
+
+print(dur.totalSeconds) # Total seconds
+print(dur.totalHours) # Total hours
+print(dur.totalDays) # Total days
+
+# Duration between dates
+let between = datetime.durationBetween(dt1, dt2)
+print(between.days) # Days component
+print(between.hours) # Hours component
+
+# Format duration
+datetime.formatDuration(dur) # "2 days, 5 hours, 30 minutes"
+```
+
+---
+
+## Appendix H: Regex Module
+
+The regex module provides regular expression utilities:
+
+### Basic Matching
+
+```rift
+grab regex
+
+regex.match("^\\d+", "123abc") # Match at start
+regex.search("\\d+", "abc123def") # Search anywhere
+regex.fullMatch("\\d+", "123") # Match entire string
+regex.test("\\d+", "abc123") # yes (contains digits)
+```
+
+### Finding Matches
+
+```rift
+regex.findAll("\\d+", "a1b2c3") # ~"1", "2", "3"!
+regex.findIter("\\d+", "a1b2c3") # List of match objects
+regex.count("\\d+", "a1b2c3") # 3
+regex.spans("\\d+", "a1b2c3") # ~@start: 1, end: 2#, ...!
+```
+
+### Groups
+
+```rift
+regex.groups("(\\w+)@(\\w+)", "test@example")
+# ~"test", "example"!
+
+regex.namedGroups("(?P<user>\\w+)@(?P<domain>\\w+)", "test@example")
+# @user: "test", domain: "example"#
+
+regex.captureAll("(\\d+)", "a1b2c3")
+# ~~"1"!, ~"2"!, ~"3"!!
+```
+
+### Replacement
+
+```rift
+regex.replace("\\d+", "X", "a1b2c3") # "aXbXcX"
+regex.replaceFirst("\\d+", "X", "a1b2c3") # "aXb2c3"
+regex.replaceAll("\\d+", "X", "a1b2c3") # "aXbXcX"
+```
+
+### Splitting
+
+```rift
+regex.split("\\s+", "a b  c   d") # ~"a", "b", "c", "d"!
+regex.split(",\\s*", "a, b,c ,  d") # ~"a", "b", "c", "d"!
+regex.splitWithMatches("(\\d+)", "a1b2c") # ~"a", "1", "b", "2", "c"!
+```
+
+### Flags
+
+```rift
+regex.match("hello", "HELLO", "i") # Case-insensitive
+regex.search("^line", "line1\nline2", "m") # Multiline
+regex.findAll("a.*b", "axb\nayb", "s") # Dotall
+```
+
+### Utilities
+
+```rift
+regex.escape("a.b*c?") # "a\\.b\\*c\\?"
+regex.isValid("\\d+") # yes
+regex.isValid("[") # no (invalid pattern)
+```
+
+### Common Pattern Validation
+
+```rift
+regex.validateEmail("test@example.com") # yes
+regex.validateUrl("https://example.com") # yes
+regex.validateIpv4("192.168.1.1") # yes
+regex.validateUuid("550e8400-e29b-41d4-a716-446655440000") # yes
+```
+
+### Built-in Patterns
+
+```rift
+regex.pattern("email") # Email regex
+regex.pattern("url") # URL regex
+regex.pattern("ipv4") # IPv4 regex
+regex.pattern("uuid") # UUID regex
+regex.pattern("phone_us") # US phone regex
+regex.pattern("hex_color") # Hex color regex
+regex.pattern("credit_card") # Credit card regex
+regex.listPatterns() # List all available patterns
+```
+
+---
+
+## Appendix I: Validation Module
+
+The validation module provides input validation and sanitization:
+
+### Type Validators
+
+```rift
+grab validation
+
+validation.isString("hello") # yes
+validation.isNumber(42) # yes
+validation.isInteger(42) # yes
+validation.isFloat(3.14) # yes
+validation.isBoolean(yes) # yes
+validation.isArray(~1, 2, 3!) # yes
+validation.isObject(@a: 1#) # yes
+validation.isNull(none) # yes
+validation.isDefined(42) # yes
+validation.isEmpty("") # yes
+validation.isCallable(conduit() @#) # yes
+```
+
+### String Validators
+
+```rift
+validation.isEmail("test@example.com") # yes
+validation.isUrl("https://example.com") # yes
+validation.isUuid("550e8400-e29b-41d4-a716-446655440000") # yes
+validation.isIp("192.168.1.1") # yes
+validation.isIpv4("192.168.1.1") # yes
+validation.isIpv6("::1") # yes
+validation.isDomain("example.com") # yes
+validation.isHexColor("#ff0000") # yes
+validation.isCreditCard("4111111111111111") # yes (Luhn check)
+validation.isPhone("+1234567890") # yes
+validation.isSlug("hello-world") # yes
+validation.isAlpha("hello") # yes
+validation.isAlphanumeric("hello123") # yes
+validation.isNumericString("12345") # yes
+validation.isAscii("hello") # yes
+validation.isBase64("aGVsbG8=") # yes
+validation.isJson('{"a": 1}') # yes
+validation.isDateString("2024-06-15") # yes
+validation.isDatetimeString("2024-06-15T14:30:00Z") # yes
+```
+
+### Number Validators
+
+```rift
+validation.isPositive(5) # yes
+validation.isNegative(-5) # yes
+validation.isZero(0) # yes
+validation.isBetween(5, 1, 10) # yes
+validation.isEven(4) # yes
+validation.isOdd(3) # yes
+validation.isFinite(100) # yes
+validation.isPort(8080) # yes
+```
+
+### String Content Validators
+
+```rift
+validation.minLength("hello", 3) # yes
+validation.maxLength("hello", 10) # yes
+validation.lengthBetween("hello", 3, 10) # yes
+validation.lengthExact("hello", 5) # yes
+validation.contains("hello", "ell") # yes
+validation.startsWith("hello", "hel") # yes
+validation.endsWith("hello", "lo") # yes
+validation.matches("hello", "^h.*o$") # yes
+validation.equals("hello", "hello") # yes
+validation.equalsIgnoreCase("Hello", "hello") # yes
+validation.inList("a", ~"a", "b", "c"!) # yes
+validation.notInList("d", ~"a", "b", "c"!) # yes
+```
+
+### Array Validators
+
+```rift
+validation.arrayMinLength(~1, 2, 3!, 2) # yes
+validation.arrayMaxLength(~1, 2, 3!, 5) # yes
+validation.arrayLengthBetween(~1, 2, 3!, 2, 5) # yes
+validation.arrayUnique(~1, 2, 3!) # yes
+```
+
+### Object Validators
+
+```rift
+let user = @name: "Alice", email: "alice@example.com"#
+
+validation.hasKeys(user, ~"name", "email"!) # yes
+validation.hasOnlyKeys(user, ~"name", "email", "age"!) # yes
+```
+
+### Password Validation
+
+```rift
+let result = validation.passwordStrength("MyP@ssw0rd123")
+# @
+#   valid: yes,
+#   score: 6,
+#   strength: "strong",
+#   errors: ~!
+# #
+
+let weak = validation.passwordStrength("abc")
+# @
+#   valid: no,
+#   score: 1,
+#   strength: "weak",
+#   errors: ~"Password must be at least 8 characters", ...!
+# #
+```
+
+### Sanitization
+
+```rift
+validation.sanitizeString("  hello  ") # "hello"
+validation.sanitizeString("HELLO", @lowercase: yes#) # "hello"
+validation.sanitizeNumber("123") # 123
+validation.sanitizeNumber("abc", @default: 0#) # 0
+validation.sanitizeEmail("  Test@Example.COM  ") # "test@example.com"
+validation.sanitizeUrl("example.com") # "https://example.com"
+validation.escapeHtml("<script>alert('XSS')</script>")
+# "&lt;script&gt;alert('XSS')&lt;/script&gt;"
+validation.stripHtml("<p>Hello</p>") # "Hello"
+validation.stripScripts("<script>...</script>") # ""
+```
+
+---
+
+## Appendix J: Collections Module
+
+The collections module provides advanced data structures:
+
+### Stack (LIFO)
+
+```rift
+grab collections
+
+let stack = collections.Stack()
+stack.push(1, 2, 3)
+print(stack.peek()) # 3
+print(stack.pop()) # 3
+print(stack.size()) # 2
+print(stack.isEmpty()) # no
+print(stack.toList()) # ~2, 1!
+stack.clear()
+```
+
+### Queue (FIFO)
+
+```rift
+let queue = collections.Queue()
+queue.enqueue(1, 2, 3)
+print(queue.peek()) # 1
+print(queue.dequeue()) # 1
+print(queue.size()) # 2
+print(queue.toList()) # ~2, 3!
+```
+
+### Deque (Double-ended Queue)
+
+```rift
+let deque = collections.Deque()
+deque.pushFront(1)
+deque.pushBack(2)
+print(deque.peekFront()) # 1
+print(deque.peekBack()) # 2
+deque.popFront() # 1
+deque.popBack() # 2
+```
+
+### PriorityQueue
+
+```rift
+let pq = collections.PriorityQueue()
+pq.push("low", priority: 10)
+pq.push("high", priority: 1)
+pq.push("medium", priority: 5)
+print(pq.pop()) # "high" (lowest priority value)
+print(pq.pop()) # "medium"
+```
+
+### LinkedList
+
+```rift
+let list = collections.LinkedList(~1, 2, 3!)
+list.append(4)
+list.prepend(0)
+print(list.get(2)) # 2
+list.set(2, 99)
+print(list.head()) # 0
+print(list.tail()) # 4
+print(list.indexOf(99)) # 2
+print(list.contains(99)) # yes
+list.remove(2) # Remove at index 2
+list.removeValue(4) # Remove value 4
+list.reverse()
+print(list.toList())
+```
+
+### Set (Ordered)
+
+```rift
+let set = collections.Set(~1, 2, 3!)
+set.add(4)
+print(set.has(3)) # yes
+set.remove(3)
+print(set.size()) # 3
+
+let set2 = collections.Set(~3, 4, 5!)
+let union = set.union(set2)
+let intersection = set.intersection(set2)
+let difference = set.difference(set2)
+let symmetric = set.symmetricDifference(set2)
+print(set.isSubset(set2))
+print(set.isSuperset(set2))
+```
+
+### Map (Ordered Dictionary)
+
+```rift
+let map = collections.Map(@a: 1, b: 2#)
+map.set("c", 3)
+print(map.get("c")) # 3
+print(map.has("a")) # yes
+print(map.keys()) # ~"a", "b", "c"!
+print(map.values()) # ~1, 2, 3!
+print(map.entries()) # ~~"a", 1!, ~"b", 2!, ~"c", 3!!
+map.remove("a")
+print(map.toDict()) # @b: 2, c: 3#
+```
+
+### Counter
+
+```rift
+let counter = collections.Counter(~"a", "b", "a", "a", "b", "c"!)
+print(counter.count("a")) # 3
+print(counter.count("b")) # 2
+print(counter.mostCommon(2)) # ~~"a", 3!, ~"b", 2!!
+print(counter.leastCommon(1)) # ~~"c", 1!!
+print(counter.total()) # 6
+counter.add("d", 5)
+counter.subtract("a", 2)
+print(counter.elements()) # ~"a", "b", "b", "c", "d", "d", "d", "d", "d"!
+```
+
+### DefaultDict
+
+```rift
+let dd = collections.DefaultDict(() =! ~!)
+dd.get("users").push("Alice")
+dd.get("users").push("Bob")
+dd.get("admins").push("Charlie")
+print(dd.toDict())
+# @users: ~"Alice", "Bob"!, admins: ~"Charlie"!#
+```
+
+### Tree
+
+```rift
+let root = collections.Tree("root")
+let child1 = root.addChild("child1")
+let child2 = root.addChild("child2")
+child1.addChild("grandchild1")
+child1.addChild("grandchild2")
+
+print(root.isRoot()) # yes
+print(child1.isLeaf()) # no
+print(root.height()) # 2
+print(child1.depth()) # 1
+
+root.traverse("pre") # Pre-order traversal
+root.traverse("post") # Post-order traversal
+root.traverse("breadth") # Breadth-first traversal
+
+let found = root.find("grandchild1")
+```
+
+### LRU Cache
+
+```rift
+let cache = collections.LRUCache(100) # Capacity: 100
+
+cache.set("key1", "value1")
+cache.set("key2", "value2")
+print(cache.get("key1")) # "value1"
+print(cache.has("key1")) # yes
+cache.remove("key2")
+print(cache.size()) # 1
+cache.clear()
+```
+
+---
+
+## Appendix K: Events Module
+
+The events module provides event-driven programming:
+
+### EventEmitter
+
+```rift
+grab events
+
+let emitter = events.EventEmitter()
+
+# Add listener
+emitter.on("data", conduit(data) @
+    print(`Received: $@data#`)
+#)
+
+# Add one-time listener
+emitter.once("connect", conduit() @
+    print("Connected!")
+#)
+
+# Emit event
+emitter.emit("data", "Hello, World!")
+
+# Remove listener
+emitter.off("data", handler)
+emitter.removeAllListeners("data")
+
+# Get listeners
+print(emitter.listeners("data"))
+print(emitter.listenerCount("data"))
+print(emitter.eventNames())
+```
+
+### Global Event Bus
+
+```rift
+# Subscribe to events
+events.on("userCreated", conduit(user) @
+    print(`New user: $@user.name#`)
+#)
+
+# Emit events
+events.emit("userCreated", @name: "Alice"#)
+
+# Unsubscribe
+events.off("userCreated", handler)
+```
+
+### Typed EventEmitter
+
+```rift
+let emitter = events.TypedEventEmitter()
+
+# Define event types
+emitter.defineEvent("userCreated", ~"id", "name", "email"!)
+
+# Emit with named arguments
+emitter.emit("userCreated", id: 1, name: "Alice", email: "alice@example.com")
+```
+
+### Event Utilities
+
+```rift
+# Debounce
+let debouncedSave = events.debounce(save, 300) # 300ms
+
+# Throttle
+let throttledScroll = events.throttle(handleScroll, 100) # 100ms
+
+# Wait for event
+let result = events.waitFor(emitter, "ready", timeout: 5000)
+
+# Pipe events
+let unpipe = events.pipe(source, target, ~"event1", "event2"!)
+unpipe() # Stop piping
+```
+
+### Observable (Reactive)
+
+```rift
+let counter = events.Observable(0)
+
+# Subscribe to changes
+let unsubscribe = counter.subscribe(conduit(value, oldValue) @
+    print(`Changed from $@oldValue# to $@value#`)
+#)
+
+# Update value
+counter.set(1) # Triggers callback
+counter.set(2) # Triggers callback
+
+# Get current value
+print(counter.get()) # 2
+
+# Map to computed observable
+let doubled = counter.map((x) =! x * 2)
+print(doubled.get()) # 4
+
+# Unsubscribe
+unsubscribe()
+```
+
+---
+
+## Appendix L: Logging Module
+
+The logging module provides structured logging:
+
+### Basic Logging
+
+```rift
+grab logging
+
+logging.trace("Trace message")
+logging.debug("Debug message")
+logging.info("Info message")
+logging.warn("Warning message")
+logging.error("Error message")
+logging.fatal("Fatal message")
+```
+
+### Logger Instance
+
+```rift
+let logger = logging.Logger("MyApp")
+
+logger.info("Application started")
+logger.debug("Processing data", context: @items: 42#)
+logger.error("Failed to connect", error: err)
+
+# Set log level
+logger.setLevel(logging.INFO) # Only INFO and above
+
+# Add context
+logger.addContext(app: "MyApp", version: "1.0.0")
+
+# Create child logger
+let dbLogger = logger.child("Database")
+dbLogger.info("Connected") # Logs as "MyApp.Database"
+```
+
+### Handlers
+
+```rift
+# Console handler (default)
+let consoleHandler = logging.ConsoleHandler()
+
+# File handler
+let fileHandler = logging.FileHandler("app.log")
+
+# Rotating file handler
+let rotatingHandler = logging.RotatingHandler(
+    "app.log",
+    maxSize: 10 * 1024 * 1024, # 10MB
+    backupCount: 5
+)
+
+# Memory handler (for testing)
+let memoryHandler = logging.MemoryHandler(maxRecords: 1000)
+
+# Add handlers to logger
+logger.addHandler(fileHandler)
+```
+
+### Formatters
+
+```rift
+# Text formatter
+let textFormatter = logging.TextFormatter(
+    pattern: "{timestamp} [{level}] {name}: {message}",
+    colorize: yes
+)
+
+# JSON formatter (for structured logging)
+let jsonFormatter = logging.JsonFormatter(pretty: no)
+
+# Apply to handler
+let handler = logging.ConsoleHandler(formatter: jsonFormatter)
+```
+
+### Configuration
+
+```rift
+logging.configure(@
+    level: "INFO",
+    handlers: ~
+        @type: "console", formatter: @json: yes##,
+        @type: "file", filename: "app.log"#,
+        @type: "rotating", filename: "app.log", maxSize: 10485760#
+    !
+#)
+```
+
+### Timer for Performance
+
+```rift
+# Time an operation
+let timer = logger.time("database_query")
+try @
+    # Do work
+# finally @
+    timer() # Logs: "database_query: 123.45ms"
+#
+```
+
+---
+
+## Appendix M: Async Module
+
+The async module provides Promise-like async utilities:
+
+### Promises
+
+```rift
+grab async
+
+# Create resolved promise
+let resolved = async.resolve(42)
+
+# Create rejected promise
+let rejected = async.reject("Error")
+
+# Create promise with executor
+let promise = async.Promise(conduit(resolve, reject) @
+    # Do async work
+    resolve("Success")
+#)
+
+# Chain promises
+promise
+    .then(conduit(value) @
+        print(`Got: $@value#`)
+    #)
+    .catch(conduit(error) @
+        print(`Error: $@error#`)
+    #)
+    .finally_(conduit() @
+        print("Cleanup")
+    #)
+
+# Await (blocking)
+let result = promise.await_(timeout: 5000)
+```
+
+### Promise Combinators
+
+```rift
+# Wait for all
+let all = async.all(~p1, p2, p3!)
+let results = all.await_() # ~result1, result2, result3!
+
+# Race (first to settle)
+let first = async.race(~p1, p2, p3!)
+let result = first.await_()
+
+# All settled
+let settled = async.allSettled(~p1, p2, p3!)
+let statuses = settled.await_()
+# ~@status: "fulfilled", value: ...#, @status: "rejected", value: ...#!
+
+# Any (first to resolve)
+let any = async.any(~p1, p2, p3!)
+let result = any.await_()
+```
+
+### Async Utilities
+
+```rift
+# Delay
+async.delay(1000).await_() # Wait 1 second
+
+# Timeout
+let withTimeout = async.timeout(slowOperation(), 5000)
+
+# Retry
+let result = async.retry(
+    unreliableFunction,
+    retries: 3,
+    delay: 1000,
+    backoff: 2.0
+).await_()
+
+# Parallel execution
+let results = async.parallel(~task1, task2, task3!, concurrency: 2).await_()
+
+# Sequential execution
+let results = async.sequence(~task1, task2, task3!).await_()
+
+# Async map
+let mapped = async.map(items, asyncMapper, concurrency: 5).await_()
+
+# Async filter
+let filtered = async.filter(items, asyncPredicate).await_()
+
+# Async reduce
+let result = async.reduce(items, asyncReducer, initialValue).await_()
+```
+
+### Function Modifiers
+
+```rift
+# Debounce (async version)
+let debouncedSearch = async.debounce(search, 300)
+
+# Throttle (async version)
+let throttledFetch = async.throttle(fetchData, 1000)
+```
+
+### Concurrency Control
+
+```rift
+# Semaphore (limit concurrent operations)
+let sem = async.Semaphore(5) # Max 5 concurrent
+
+repeat item in items @
+    sem.acquire().await_()
+    try @
+        wait processItem(item)
+    # finally @
+        sem.release()
+    #
+#
+
+# Mutex (exclusive access)
+let mutex = async.Mutex()
+
+mutex.lock().await_()
+try @
+    # Critical section
+# finally @
+    mutex.unlock()
+#
+```
+
+---
+
+## Appendix N: Functional Module
+
+The functional module provides functional programming utilities:
+
+### Composition
+
+```rift
+grab functional
+
+# Compose (right to left)
+let process = functional.compose(
+    (x) =! x * 2,
+    (x) =! x + 1,
+    (x) =! x ** 2
+)
+print(process(3)) # ((3 ** 2) + 1) * 2 = 20
+
+# Pipe (left to right)
+let process = functional.pipe(
+    (x) =! x ** 2,
+    (x) =! x + 1,
+    (x) =! x * 2
+)
+print(process(3)) # ((3 ** 2) + 1) * 2 = 20
+```
+
+### Currying and Partial Application
+
+```rift
+# Curry
+let add = functional.curry((a, b, c) =! a + b + c, 3)
+let add5 = add(5)
+let add5and10 = add5(10)
+print(add5and10(3)) # 18
+
+# Partial application
+let add10 = functional.partial((a, b) =! a + b, 10)
+print(add10(5)) # 15
+
+let add10Right = functional.partialRight((a, b) =! a - b, 10)
+print(add10Right(20)) # 10
+```
+
+### Function Modifiers
+
+```rift
+# Negate
+let isNotEmpty = functional.negate((s) =! s.isEmpty())
+
+# Once (run only once)
+let initialize = functional.once(expensiveInit)
+initialize() # Runs
+initialize() # Returns cached result
+
+# Memoize
+let fibMemo = functional.memoize(fib)
+fibMemo.cache # Access cache
+fibMemo.clear() # Clear cache
+
+# After (run after n calls)
+let runAfter3 = functional.after(3, handler)
+
+# Before (run before n calls)
+let runBefore3 = functional.before(3, handler)
+
+# Times (call n times)
+let results = functional.times(5, (i) =! i * 2)
+# ~0, 2, 4, 6, 8!
+
+# Constant
+let always42 = functional.constant(42)
+print(always42()) # 42
+
+# Identity
+print(functional.identity(42)) # 42
+
+# Noop
+functional.noop() # Does nothing
+
+# Flip first two arguments
+let subtract = functional.flip((a, b) =! a - b)
+print(subtract(3, 10)) # 7 (10 - 3)
+
+# Spread array to arguments
+let spreadSum = functional.spread((a, b, c) =! a + b + c)
+print(spreadSum(~1, 2, 3!)) # 6
+
+# Unary (take only first arg)
+let parseIntUnary = functional.unary(parseInt)
+~"1", "2", "3"! -! map(parseIntUnary) # Works correctly
+```
+
+### Comparison Helpers
+
+```rift
+let eq5 = functional.eq(5)
+let ne5 = functional.ne(5)
+let lt10 = functional.lt(10)
+let le10 = functional.le(10)
+let gt5 = functional.gt(5)
+let ge5 = functional.ge(5)
+let between5and10 = functional.between(5, 10)
+
+print(eq5(5)) # yes
+print(between5and10(7)) # yes
+```
+
+### Property Access
+
+```rift
+let getName = functional.prop("name")
+let getNestedName = functional.path(~"user", "profile", "name"!)
+let isAdmin = functional.propEq("role", "admin")
+let pickNameAge = functional.pick("name", "age")
+let omitPassword = functional.omit("password")
+
+print(getName(@name: "Alice"#)) # "Alice"
+print(isAdmin(@role: "admin"#)) # yes
+```
+
+### Logical Combinators
+
+```rift
+# All pass
+let isValidAge = functional.allPass(
+    functional.gt(0),
+    functional.lt(150)
+)
+
+# Any pass
+let isAdminOrMod = functional.anyPass(
+    functional.propEq("role", "admin"),
+    functional.propEq("role", "moderator")
+)
+
+# Both
+let isPositiveEven = functional.both(
+    (x) =! x ! 0,
+    (x) =! x % 2 == 0
+)
+
+# Either
+let isNullOrEmpty = functional.either(
+    (x) =! x == none,
+    (x) =! x == ""
+)
+
+# Complement (not)
+let isNotEmpty = functional.complement((x) =! x.isEmpty())
+```
+
+### Control Flow
+
+```rift
+# If/Else
+let abs = functional.ifElse(
+    (x) =! x ! 0,
+    (x) =! x,
+    (x) =! -x
+)
+
+# When
+let doubleIfPositive = functional.when(
+    (x) =! x ! 0,
+    (x) =! x * 2
+)
+
+# Unless
+let defaultIfEmpty = functional.unless(
+    (x) =! x.length ! 0,
+    () =! "default"
+)
+
+# Cond (multiple conditions)
+let grade = functional.cond(
+    (x) =! x != 90, () =! "A",
+    (x) =! x != 80, () =! "B",
+    (x) =! x != 70, () =! "C",
+    yes, () =! "F"
+)
+
+# Switch
+let handler = functional.switch(
+    (x) =! x.type,
+    @
+        "create": handleCreate,
+        "update": handleUpdate,
+        "delete": handleDelete
+    #,
+    handleDefault
+)
+```
+
+### Tap
+
+```rift
+# Tap (for side effects)
+let logAndReturn = functional.tap((x) =! print(`Value: $@x#`))
+
+~1, 2, 3!
+    -! map((x) =! x * 2)
+    -! tap((arr) =! print(arr)) # Log intermediate result
+    -! filter((x) =! x ! 3)
+```
+
+### Type Checking
+
+```rift
+print(functional.isNil(none)) # yes
+print(functional.isNotNil(42)) # yes
+
+let isString = functional.isType("string")
+let isNumber = functional.isType("number")
+let isList = functional.isType("list")
+
+print(isString("hello")) # yes
+```
+
+### Maybe Monad
+
+```rift
+let just = functional.Just(5)
+let nothing = functional.Nothing()
+
+print(just.isJust()) # yes
+print(nothing.isNothing()) # yes
+
+let result = just
+    .map((x) =! x * 2)
+    .filter((x) =! x ! 5)
+    .getOrElse(0)
+
+print(result) # 10
+
+let maybe = functional.Maybe(possiblyNullValue)
+print(maybe.getOrElse("default"))
+```
+
+### Either Monad
+
+```rift
+let right = functional.Right(42)
+let left = functional.Left("Error")
+
+print(right.isRight()) # yes
+print(left.isLeft()) # yes
+
+let result = right
+    .map((x) =! x * 2)
+    .getOrElse(0)
+
+let handled = left.fold(
+    (err) =! print(`Error: $@err#`),
+    (val) =! print(`Value: $@val#`)
+)
+
+# Try-catch as Either
+let either = functional.tryCatch(riskyOperation)
+if either.isRight() @
+    print(either.getOrElse(none))
+# else @
+    print("Operation failed")
+#
+```
 
 ---
 

@@ -561,6 +561,17 @@ class Interpreter:
             'crypto': self._load_crypto_module,
             'fs': self._load_fs_module,
             'json': self._load_json_module,
+            'math': self._load_math_module,
+            'string': self._load_string_module,
+            'array': self._load_array_module,
+            'datetime': self._load_datetime_module,
+            'regex': self._load_regex_module,
+            'validation': self._load_validation_module,
+            'collections': self._load_collections_module,
+            'events': self._load_events_module,
+            'logging': self._load_logging_module,
+            'async': self._load_async_module,
+            'functional': self._load_functional_module,
         }
         
         if name in stdlib:
@@ -594,6 +605,61 @@ class Interpreter:
         """Load JSON module."""
         from .stdlib.json_lib import create_json_module
         return create_json_module(self)
+    
+    def _load_math_module(self) -> Dict[str, Any]:
+        """Load math module."""
+        from .stdlib.math_lib import create_math_module
+        return create_math_module(self)
+    
+    def _load_string_module(self) -> Dict[str, Any]:
+        """Load string module."""
+        from .stdlib.string_lib import create_string_module
+        return create_string_module(self)
+    
+    def _load_array_module(self) -> Dict[str, Any]:
+        """Load array module."""
+        from .stdlib.array_lib import create_array_module
+        return create_array_module(self)
+    
+    def _load_datetime_module(self) -> Dict[str, Any]:
+        """Load datetime module."""
+        from .stdlib.datetime_lib import create_datetime_module
+        return create_datetime_module(self)
+    
+    def _load_regex_module(self) -> Dict[str, Any]:
+        """Load regex module."""
+        from .stdlib.regex_lib import create_regex_module
+        return create_regex_module(self)
+    
+    def _load_validation_module(self) -> Dict[str, Any]:
+        """Load validation module."""
+        from .stdlib.validation_lib import create_validation_module
+        return create_validation_module(self)
+    
+    def _load_collections_module(self) -> Dict[str, Any]:
+        """Load collections module."""
+        from .stdlib.collections_lib import create_collections_module
+        return create_collections_module(self)
+    
+    def _load_events_module(self) -> Dict[str, Any]:
+        """Load events module."""
+        from .stdlib.events_lib import create_events_module
+        return create_events_module(self)
+    
+    def _load_logging_module(self) -> Dict[str, Any]:
+        """Load logging module."""
+        from .stdlib.logging_lib import create_logging_module
+        return create_logging_module(self)
+    
+    def _load_async_module(self) -> Dict[str, Any]:
+        """Load async module."""
+        from .stdlib.async_lib import create_async_module
+        return create_async_module(self)
+    
+    def _load_functional_module(self) -> Dict[str, Any]:
+        """Load functional module."""
+        from .stdlib.functional_lib import create_functional_module
+        return create_functional_module(self)
     
     def _eval_ExportStatement(self, node: ast.ExportStatement) -> None:
         """Handle exports (for module system)."""
