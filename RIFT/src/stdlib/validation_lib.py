@@ -557,8 +557,52 @@ def create_validation_module(interpreter) -> Dict[str, Any]:
         return re.sub(r'<[^>]+>', '', str(value))
     
     def val_strip_scripts(value: str) -> str:
-        """Remove script tags from HTML."""
-        return re.sub(r'<script[^>]*>.*?</script>', '', str(value), flags=re.IGNORECASE | re.DOTALL)
+        """Remove script tags from HTML using safe HTML parsing."""
+        # Use HTML parser for safe script tag removal instead of regex
+        # This avoids regex-based XSS vulnerabilities
+        from html.parser import HTMLParser
+        from io import StringIO
+        
+        class ScriptStripper(HTMLParser):
+            def __init__(self):
+                super().__init__()
+                self.result = StringIO()
+                self.in_script = False
+                
+            def handle_starttag(self, tag, attrs):
+                if tag.lower() == 'script':
+                    self.in_script = True
+                elif not self.in_script:
+                    self.result.write(self.get_starttag_text())
+                    
+            def handle_endtag(self, tag):
+                if tag.lower() == 'script':
+                    self.in_script = False
+                elif not self.in_script:
+                    self.result.write(f'</{tag}>')
+                    
+            def handle_data(self, data):
+                if not self.in_script:
+                    self.result.write(data)
+                    
+            def handle_entityref(self, name):
+                if not self.in_script:
+                    self.result.write(f'&{name};')
+                    
+            def handle_charref(self, name):
+                if not self.in_script:
+                    self.result.write(f'&#{name};')
+                    
+            def get_result(self):
+                return self.result.getvalue()
+        
+        try:
+            stripper = ScriptStripper()
+            stripper.feed(str(value))
+            return stripper.get_result()
+        except Exception:
+            # If parsing fails, return the original value
+            return str(value)
     
     # ========================================================================
     # Validation Builder
