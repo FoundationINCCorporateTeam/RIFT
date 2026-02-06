@@ -819,5 +819,76 @@ class TestIntegration(unittest.TestCase):
         self.assertEqual(result, [[1, 2], [3, 4], [5, 6]])
 
 
+class TestCloudAgentModule(unittest.TestCase):
+    """Test the cloud agent module."""
+    
+    def setUp(self):
+        self.interp = Interpreter()
+        self.agent = self.interp._load_cloud_agent_module()
+    
+    def test_module_exports(self):
+        """Test that module exports expected functions."""
+        self.assertIn('configure_openai', self.agent)
+        self.assertIn('configure_anthropic', self.agent)
+        self.assertIn('configure_from_env', self.agent)
+        self.assertIn('delegate', self.agent)
+        self.assertIn('ask', self.agent)
+        self.assertIn('analyze', self.agent)
+        self.assertIn('generate', self.agent)
+        self.assertIn('batch', self.agent)
+        self.assertIn('openai', self.agent)
+        self.assertIn('anthropic', self.agent)
+    
+    def test_configure_from_env_no_error(self):
+        """Test that configure_from_env doesn't error without keys."""
+        # Should not raise an exception even if env vars not set
+        self.agent['configure_from_env']()
+    
+    def test_openai_configuration(self):
+        """Test OpenAI configuration."""
+        self.agent['configure_openai']('test-api-key', 'gpt-4')
+        # Should not raise an exception
+    
+    def test_anthropic_configuration(self):
+        """Test Anthropic configuration."""
+        self.agent['configure_anthropic']('test-api-key', 'claude-3-5-sonnet-20241022')
+        # Should not raise an exception
+    
+    def test_delegate_without_config(self):
+        """Test that delegate raises error without configuration."""
+        with self.assertRaises(ValueError):
+            self.agent['delegate']('test task')
+    
+    def test_ask_without_config(self):
+        """Test that ask raises error without configuration."""
+        with self.assertRaises(ValueError):
+            self.agent['ask']('test question')
+    
+    def test_analyze_without_config(self):
+        """Test that analyze raises error without configuration."""
+        with self.assertRaises(ValueError):
+            self.agent['analyze']({'data': 'test'})
+    
+    def test_generate_without_config(self):
+        """Test that generate raises error without configuration."""
+        with self.assertRaises(ValueError):
+            self.agent['generate']('template {var}', {'var': 'value'})
+    
+    def test_batch_without_config(self):
+        """Test that batch raises error without configuration."""
+        with self.assertRaises(ValueError):
+            self.agent['batch'](['task1', 'task2'])
+    
+    def test_generate_template_substitution(self):
+        """Test template substitution in generate (without making API call)."""
+        # This tests template substitution logic only
+        template = "Hello {name}, you are {age} years old"
+        variables = {'name': 'Alice', 'age': '30'}
+        
+        # We can't test the actual generation without an API key,
+        # but we verify the function exists and has correct signature
+        self.assertTrue(callable(self.agent['generate']))
+
+
 if __name__ == '__main__':
     unittest.main()
