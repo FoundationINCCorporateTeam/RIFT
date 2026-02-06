@@ -1,0 +1,15 @@
+/* Simple Cloud Agent Test */
+/* Quick test to verify cloud agent module loads correctly */
+
+grab agent
+
+print("Cloud agent module loaded successfully!")
+
+/* Try to configure from environment */
+agent.configure_from_env()
+
+print("Cloud agent ready to use!")
+print("\nTo use the cloud agent:")
+print("1. Set OPENAI_API_KEY or ANTHROPIC_API_KEY environment variable")
+print("2. Call agent.delegate('your task here')")
+print("3. Or use agent.ask(), agent.analyze(), etc.")

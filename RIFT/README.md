@@ -203,6 +203,51 @@ grab utils.*
 
 ## Standard Library
 
+### Cloud Agent
+
+```rift
+grab agent
+
+/* Configure from environment variables */
+agent.configure_from_env()
+
+/* Simple task delegation */
+let response = agent.delegate("What is the capital of France?")
+print(response)
+
+/* Ask with context */
+let context = "RIFT is a modern programming language"
+let answer = agent.ask("What makes RIFT unique?", context)
+
+/* Analyze data */
+let data = @q1: 15000, q2: 18000, q3: 22000, q4: 25000#
+let analysis = agent.analyze(data, "Analyze the quarterly trend")
+
+/* Generate content */
+let template = "Write a brief intro for {product} targeting {audience}"
+let content = agent.generate(template, @
+    product: "RIFT", 
+    audience: "developers"
+#)
+
+/* Batch processing */
+let tasks = ~"Task 1", "Task 2", "Task 3"!
+let results = agent.batch(tasks)
+
+/* Configure specific providers */
+agent.configure_openai("your-api-key", "gpt-4")
+agent.configure_anthropic("your-api-key", "claude-3-5-sonnet-20241022")
+
+/* Use specific provider */
+let response = agent.delegate("Hello", "openai")
+```
+
+Environment variables:
+- `OPENAI_API_KEY` - OpenAI API key
+- `OPENAI_MODEL` - OpenAI model (default: gpt-4)
+- `ANTHROPIC_API_KEY` - Anthropic API key
+- `ANTHROPIC_MODEL` - Anthropic model (default: claude-3-5-sonnet-20241022)
+
 ### HTTP Server
 
 ```rift

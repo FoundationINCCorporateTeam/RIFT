@@ -1,0 +1,78 @@
+/* Cloud Agent Example */
+/* Demonstrates delegating tasks to cloud-based AI agents */
+
+grab agent
+
+/* Configure from environment variables */
+/* Set OPENAI_API_KEY or ANTHROPIC_API_KEY in your environment */
+agent.configure_from_env()
+
+/* Example 1: Simple delegation */
+print("=== Example 1: Simple Task Delegation ===")
+try @
+    let response = agent.delegate("What is the capital of France?")
+    print(`Response: $@response#`)
+/* catch error @ */
+    print(`Error: $@error#`)
+/* */
+
+/* Example 2: Ask a question with context */
+print("\n=== Example 2: Question with Context ===")
+try @
+    let context = "RIFT is a modern programming language with intuitive syntax"
+    let answer = agent.ask("What makes RIFT different?", context)
+    print(`Answer: $@answer#`)
+/* catch error @ */
+    print(`Error: $@error#`)
+/* */
+
+/* Example 3: Analyze data */
+print("\n=== Example 3: Data Analysis ===")
+try @
+    let sales_data = @
+        q1: 15000,
+        q2: 18000,
+        q3: 22000,
+        q4: 25000
+    #
+    
+    let analysis = agent.analyze(
+        sales_data,
+        "Analyze the quarterly trend and provide insights"
+    )
+    print(`Analysis: $@analysis#`)
+/* catch error @ */
+    print(`Error: $@error#`)
+/* */
+
+/* Example 4: Generate content */
+print("\n=== Example 4: Content Generation ===")
+try @
+    let template = "Write a brief introduction for {product} targeting {audience}"
+    let content = agent.generate(template, @
+        product: "RIFT programming language",
+        audience: "software developers"
+    #)
+    print(`Generated: $@content#`)
+/* catch error @ */
+    print(`Error: $@error#`)
+/* */
+
+/* Example 5: Batch processing */
+print("\n=== Example 5: Batch Processing ===")
+try @
+    let tasks = ~
+        "Translate 'Hello' to French",
+        "Translate 'Hello' to Spanish",
+        "Translate 'Hello' to German"
+    !
+    
+    let results = agent.batch(tasks)
+    repeat (index, result) in results @
+        print(`Task $@index + 1#: $@result#`)
+    /* */
+/* catch error @ */
+    print(`Error: $@error#`)
+/* */
+
+print("\nCloud Agent examples completed!")

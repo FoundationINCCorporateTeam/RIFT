@@ -572,6 +572,7 @@ class Interpreter:
             'logging': self._load_logging_module,
             'async': self._load_async_module,
             'functional': self._load_functional_module,
+            'agent': self._load_cloud_agent_module,
         }
         
         if name in stdlib:
@@ -660,6 +661,11 @@ class Interpreter:
         """Load functional module."""
         from .stdlib.functional_lib import create_functional_module
         return create_functional_module(self)
+    
+    def _load_cloud_agent_module(self) -> Dict[str, Any]:
+        """Load cloud agent module."""
+        from .stdlib.cloud_agent import create_cloud_agent_module
+        return create_cloud_agent_module(self)
     
     def _eval_ExportStatement(self, node: ast.ExportStatement) -> None:
         """Handle exports (for module system)."""
